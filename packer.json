@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "region": "eu-central-1"
+  },
+  "builders": [
+    {
+      "ami_name": "spacelift-worker-{{timestamp}}",
+      "instance_type": "t2.micro",
+      "source_ami": "ami-00a205cb8e06c3c4e",
+      "region": "{{user `region`}}",
+      "ssh_username": "ec2-user",
+      "type": "amazon-ebs",
+      "associate_public_ip_address": "true",
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/xvda",
+          "volume_size": 40,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "systemd.service",
+      "destination": "spacelift-launcher.service"
+    },
+    {
+      "type": "file",
+      "source": "env",
+      "destination": "spacelift-launcher"
+    },
+    {
+      "type": "shell",
+      "script": "./bootstrap.sh"
+    }
+  ]
+}

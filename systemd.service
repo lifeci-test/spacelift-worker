@@ -1,0 +1,9 @@
+[Unit]
+Description=Spacelift worker
+
+[Service]
+EnvironmentFile=/etc/sysconfig/spacelift-launcher
+ExecStart=/usr/bin/spacelift-launcher
+
+[Install]
+WantedBy=multi-user.target
